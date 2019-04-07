@@ -46,30 +46,27 @@ void render(void){
 
 
 
-	for(int i = 0; i<cols; i++){
-		for(int j = 0; j<rows; j++){
-			glBegin(GL_POLYGON);
-			if((i == posY) && (j == posX)){
-				glColor3f(1, 1, 1);
-				glVertex2f(-1+size*j,1-size*i);
-				glVertex2f(-1+size+size*j,1-size*i);
-				glVertex2f(-1+size+size*j,1-size-size*i);
-				glVertex2f(-1+size*j,1-size-size*i);
-			}else if((i == fruitX) && (j == fruitY)){
-				glColor3f(0, 1, 0.55);
-				glVertex2f(-1+size*j,1-size*i);
-				glVertex2f(-1+size+size*j,1-size*i);
-				glVertex2f(-1+size+size*j,1-size-size*i);
-				glVertex2f(-1+size*j,1-size-size*i);
-			}else{
-				glColor3f(0, 0, 0);
-			}
+	// TODO Jump to pixels that have to be drawn instead of drawing everything
+	glBegin(GL_POLYGON);
+	glColor3f(1, 1, 1);
+	glVertex2f(-1+size*posX,1-size*posY);
+	glVertex2f(-1+size+size*posX,1-size*posY);
+	glVertex2f(-1+size+size*posX,1-size-size*posY);
+	glVertex2f(-1+size*posX,1-size-size*posY);
+	glEnd();
 
+	glBegin(GL_POLYGON);
+	glColor3f(0, 1, 0.55);
+	glVertex2f(-1+size*fruitX,1-size*fruitY);
+	glVertex2f(-1+size+size*fruitX,1-size*fruitY);
+	glVertex2f(-1+size+size*fruitX,1-size-size*fruitY);
+	glVertex2f(-1+size*fruitX,1-size-size*fruitY);
+	glEnd();
 
-			glEnd();
-			glFlush();
-		}
-	}		
+	if((posX == fruitX) && (posY == fruitY)){
+		printf("Score");
+	}
+
 
 	glutPostRedisplay();
 	glutSwapBuffers();
@@ -85,6 +82,4 @@ void keyboard(int key, int x, int y){
 	}else if(key == GLUT_KEY_DOWN){
 		dir = d;
 	}
-
-
 }
