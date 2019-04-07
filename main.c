@@ -47,8 +47,8 @@ int main(int argc, char ** argv){
 void render(void){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	glColor3f(1,1,1);
 	glRasterPos2d(-1.0,-1.0);
-	glColor3f(0,0,0);
 	char ks[3];
 	sprintf(ks,"%d",tailLength);
 	for(int i = 0; i<strlen(ks); i++){
