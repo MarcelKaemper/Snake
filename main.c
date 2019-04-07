@@ -13,14 +13,18 @@ struct timespec req = {0};
 
 int posX = 0;
 int posY = 0;
-int tempX;
-int tempY;
 int fruitX = 20;
 int fruitY = 20;
-int tail = 0;
+int tailX[100] = {};
+int tailY[100] = {};
+int tailLength = 0;
 
 enum direction{u, d, l, r};
 enum direction dir = r;
+
+float size = 0.02;
+int cols = 100;
+int rows = 100;
 
 /* srand(time(NULL));   // Initialization, should only be called once. */
 
@@ -41,14 +45,12 @@ int main(int argc, char ** argv){
 void render(void){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	float size = 0.02;
-	int cols = 100;
-	int rows = 100;
-
-	for(int i = 0; i<=tail; i++){
-		tempX = posX;
-		tempY = posY;
+	for(int i = tailLength; i>0; i--){
+		tailX[i] = tailX[i-1];
+		tailY[i] = tailY[i-1];
 	}
+	tailX[0] = posX;
+	tailY[0] = posY;
 
 	if(dir == r){
 		posX++;
@@ -61,10 +63,9 @@ void render(void){
 	}
 
 	if((posX == fruitX) && (posY == fruitY)){
-		printf("Score");
 		fruitX = rand() % 100;
 		fruitY = rand() % 100;
-		tail++;
+		tailLength++;
 	}
 
 	// Draw fruit
@@ -78,24 +79,25 @@ void render(void){
 
 	// Draw head
 	glBegin(GL_POLYGON);
-	glColor3f(1, 1, 1);
+	glColor3f(1, 0, 0);
 	glVertex2f(-1+size*posX,1-size*posY);
 	glVertex2f(-1+size+size*posX,1-size*posY);
 	glVertex2f(-1+size+size*posX,1-size-size*posY);
 	glVertex2f(-1+size*posX,1-size-size*posY);
 	glEnd();
 
-	// Draw tail
-	for(int i = 0; i<tail; i++){
+	for(int i = 0; i<tailLength; i++){
+		if((tailX[i] == posX) && (tailY[i] == posY)){
+			exit(1);
+		}
 		glBegin(GL_POLYGON);
 		glColor3f(1, 1, 1);
-		glVertex2f(-1+size*tempX,1-size*tempY);
-		glVertex2f(-1+size+size*tempX,1-size*tempY);
-		glVertex2f(-1+size+size*tempX,1-size-size*tempY);
-		glVertex2f(-1+size*tempX,1-size-size*tempY);
+		glVertex2f(-1+size*tailX[i],1-size*tailY[i]);
+		glVertex2f(-1+size+size*tailX[i],1-size*tailY[i]);
+		glVertex2f(-1+size+size*tailX[i],1-size-size*tailY[i]);
+		glVertex2f(-1+size*tailX[i],1-size-size*tailY[i]);
 		glEnd();
 	}
-
 
 	delay();
 	glutSwapBuffers();
