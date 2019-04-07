@@ -51,16 +51,20 @@ void render(void){
 			glBegin(GL_POLYGON);
 			if((i == posY) && (j == posX)){
 				glColor3f(1, 1, 1);
+				glVertex2f(-1+size*j,1-size*i);
+				glVertex2f(-1+size+size*j,1-size*i);
+				glVertex2f(-1+size+size*j,1-size-size*i);
+				glVertex2f(-1+size*j,1-size-size*i);
 			}else if((i == fruitX) && (j == fruitY)){
 				glColor3f(0, 1, 0.55);
+				glVertex2f(-1+size*j,1-size*i);
+				glVertex2f(-1+size+size*j,1-size*i);
+				glVertex2f(-1+size+size*j,1-size-size*i);
+				glVertex2f(-1+size*j,1-size-size*i);
 			}else{
 				glColor3f(0, 0, 0);
 			}
 
-			glVertex2f(-1+size*j,1-size*i);
-			glVertex2f(-1+size+size*j,1-size*i);
-			glVertex2f(-1+size+size*j,1-size-size*i);
-			glVertex2f(-1+size*j,1-size-size*i);
 
 			glEnd();
 			glFlush();
