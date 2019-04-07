@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include <GL/glut.h>
 
 // Callback functions
@@ -12,6 +14,8 @@ int fruitY = 20;
 
 enum direction{u, d, l, r};
 enum direction dir = r;
+
+/* srand(time(NULL));   // Initialization, should only be called once. */
 
 int main(int argc, char ** argv){
 	glutInit(&argc, argv);
@@ -44,9 +48,12 @@ void render(void){
 		posY++;
 	}
 
+	if((posX == fruitX) && (posY == fruitY)){
+		printf("Score");
+		fruitX = rand() % 100;
+		fruitY = rand() % 100;
+	}
 
-
-	// TODO Jump to pixels that have to be drawn instead of drawing everything
 	glBegin(GL_POLYGON);
 	glColor3f(1, 1, 1);
 	glVertex2f(-1+size*posX,1-size*posY);
@@ -63,13 +70,8 @@ void render(void){
 	glVertex2f(-1+size*fruitX,1-size-size*fruitY);
 	glEnd();
 
-	if((posX == fruitX) && (posY == fruitY)){
-		printf("Score");
-	}
-
-
-	glutPostRedisplay();
 	glutSwapBuffers();
+	glutPostRedisplay();
 }
 
 void keyboard(int key, int x, int y){
