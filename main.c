@@ -7,10 +7,17 @@
 void render(void);
 void keyboard(int key, int x, int y);
 
+void delay();
+int milisec = 50; // length of time to sleep, in miliseconds
+struct timespec req = {0};
+
 int posX = 0;
 int posY = 0;
+int tempX;
+int tempY;
 int fruitX = 20;
 int fruitY = 20;
+int tail = 0;
 
 enum direction{u, d, l, r};
 enum direction dir = r;
@@ -38,6 +45,11 @@ void render(void){
 	int cols = 100;
 	int rows = 100;
 
+	for(int i = 0; i<=tail; i++){
+		tempX = posX;
+		tempY = posY;
+	}
+
 	if(dir == r){
 		posX++;
 	}else if(dir == l){
@@ -52,6 +64,7 @@ void render(void){
 		printf("Score");
 		fruitX = rand() % 100;
 		fruitY = rand() % 100;
+		tail++;
 	}
 
 	glBegin(GL_POLYGON);
@@ -62,8 +75,18 @@ void render(void){
 	glVertex2f(-1+size*posX,1-size-size*posY);
 	glEnd();
 
+	for(int i = 0; i<tail; i++){
+		glBegin(GL_POLYGON);
+		glColor3f(1, 1, 1);
+		glVertex2f(-1+size*tempX,1-size*tempY);
+		glVertex2f(-1+size+size*tempX,1-size*tempY);
+		glVertex2f(-1+size+size*tempX,1-size-size*tempY);
+		glVertex2f(-1+size*tempX,1-size-size*tempY);
+		glEnd();
+	}
+
 	glBegin(GL_POLYGON);
-	glColor3f(0, 1, 0.55);
+	glColor3f(0.55, 1, 0.55);
 	glVertex2f(-1+size*fruitX,1-size*fruitY);
 	glVertex2f(-1+size+size*fruitX,1-size*fruitY);
 	glVertex2f(-1+size+size*fruitX,1-size-size*fruitY);
@@ -71,6 +94,7 @@ void render(void){
 	glEnd();
 
 	glutSwapBuffers();
+	delay();
 	glutPostRedisplay();
 }
 
@@ -84,4 +108,10 @@ void keyboard(int key, int x, int y){
 	}else if(key == GLUT_KEY_DOWN){
 		dir = d;
 	}
+}
+
+void delay(){
+	req.tv_sec = 0;
+	req.tv_nsec = milisec * 1000000L;
+	nanosleep(&req, (struct timespec *)NULL);
 }
