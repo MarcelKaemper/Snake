@@ -2,12 +2,14 @@
 #include <stdlib.h>
 #include <time.h>
 #include <GL/glut.h>
+#include <string.h>
 
 // Callback functions
 void render(void);
 void keyboard(int key, int x, int y);
 
 void delay();
+
 int milisec = 50; // length of time to sleep, in miliseconds
 struct timespec req = {0};
 
@@ -31,7 +33,7 @@ int rows = 100;
 int main(int argc, char ** argv){
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-	glutInitWindowSize(600,600);
+	glutInitWindowSize(800,800);
 	glutInitWindowPosition(100,100);
 	glutCreateWindow("Snake");
 	glutDisplayFunc(render);
@@ -44,6 +46,14 @@ int main(int argc, char ** argv){
 
 void render(void){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glRasterPos2d(-1.0,-1.0);
+	glColor3f(0,0,0);
+	char ks[3];
+	sprintf(ks,"%d",tailLength);
+	for(int i = 0; i<strlen(ks); i++){
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ks[i]);
+	}
 
 	for(int i = tailLength; i>0; i--){
 		tailX[i] = tailX[i-1];
@@ -121,3 +131,4 @@ void delay(){
 	req.tv_nsec = milisec * 1000000L;
 	nanosleep(&req, (struct timespec *)NULL);
 }
+
