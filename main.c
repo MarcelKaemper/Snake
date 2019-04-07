@@ -67,6 +67,16 @@ void render(void){
 		tail++;
 	}
 
+	// Draw fruit
+	glBegin(GL_POLYGON);
+	glColor3f(0.55, 1, 0.55);
+	glVertex2f(-1+size*fruitX,1-size*fruitY);
+	glVertex2f(-1+size+size*fruitX,1-size*fruitY);
+	glVertex2f(-1+size+size*fruitX,1-size-size*fruitY);
+	glVertex2f(-1+size*fruitX,1-size-size*fruitY);
+	glEnd();
+
+	// Draw head
 	glBegin(GL_POLYGON);
 	glColor3f(1, 1, 1);
 	glVertex2f(-1+size*posX,1-size*posY);
@@ -75,6 +85,7 @@ void render(void){
 	glVertex2f(-1+size*posX,1-size-size*posY);
 	glEnd();
 
+	// Draw tail
 	for(int i = 0; i<tail; i++){
 		glBegin(GL_POLYGON);
 		glColor3f(1, 1, 1);
@@ -85,16 +96,9 @@ void render(void){
 		glEnd();
 	}
 
-	glBegin(GL_POLYGON);
-	glColor3f(0.55, 1, 0.55);
-	glVertex2f(-1+size*fruitX,1-size*fruitY);
-	glVertex2f(-1+size+size*fruitX,1-size*fruitY);
-	glVertex2f(-1+size+size*fruitX,1-size-size*fruitY);
-	glVertex2f(-1+size*fruitX,1-size-size*fruitY);
-	glEnd();
 
-	glutSwapBuffers();
 	delay();
+	glutSwapBuffers();
 	glutPostRedisplay();
 }
 
